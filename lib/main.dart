@@ -1,238 +1,88 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:responsive_builder/responsive_builder.dart';
+import 'variable.dart';
+import 'homepage.dart';
+void main()=> runApp(const MaterialApp(
+  debugShowCheckedModeBanner: false,
+  home: Loading(),
+));
 
-void main()
-{
-  runApp(MaterialApp(
-    debugShowCheckedModeBanner: false,
-    home: Homepage(),
-  ));
-}
-
-class Homepage extends StatefulWidget {
-  const Homepage({super.key});
+class Loading extends StatefulWidget {
+  const Loading({super.key});
 
   @override
-  State<Homepage> createState() => _HomepageState();
+  State<Loading> createState() => _LoadingState();
 }
 
-class _HomepageState extends State<Homepage> {
+class _LoadingState extends State<Loading> {
+  Future<void> getData() async {
+
+        try {
+        final response = await http.get(Uri.parse(url)).timeout(const Duration(seconds: 7));
+
+        user = [jsonDecode(response.body)];
+        print(user[0]['info']['version']);
+        Navigator.pushReplacement(context, MaterialPageRoute(builder: (BuildContext context)=> const Homepage()));
+
+        }catch(e) {
+        showDialog(context: context, builder: (context){
+        return AlertDialog(
+        title: const Text('Message'),
+        content: const Text('No Internet Connection'),
+        actions: [
+        TextButton(onPressed: (){
+        getData();
+        Navigator.pop(context);
+        }, child: const Text('Retry'))
+        ],
+        );
+        });
+        }
+
+
+  }
+  @override
+  void initState() {
+    getData();
+    super.initState();
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-
-    
-      appBar: AppBar(
-        toolbarHeight: 80,
-        title: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Container(
-
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: InkWell(
-                  onTap: () {},
-                  child: Row(
-                    children: [
-
-                      Text(
-                        'RamdomME',
-                        style:
-                        TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                      ),
-                      SizedBox(width: 4.0),
-                    ],
-                  ),
-                ),
-              ),
+      backgroundColor: Colors.white,
+      body: Padding(
+        padding: const EdgeInsets.all(15.0),
+        child: Container(
+          decoration: BoxDecoration(
+            border: Border.all(
+              color: Colors.black12,
+              width: 2.0,
             ),
-            Expanded(
-              child: SizedBox(
-                width: 300,
+            borderRadius: BorderRadius.circular(40),
+            color: Colors.white12,
+            boxShadow: const [
+              BoxShadow(
+                color: Colors.white12,
+                blurRadius: 3.0,
+                spreadRadius: 4.0,
+                offset: Offset(0, 2),
               ),
-            )
-          ],
-        ),
-      ),
-      body: ResponsiveBuilder(
-        builder: (context, sizingInformation) {
-          double maxWidth = MediaQuery.of(context).size.width;
-          return SingleChildScrollView(
+            ],
+          ),
+          child: Center(
             child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                SizedBox(height: 20,),
-                Padding(
-                  padding: EdgeInsets.all(10),
-                  child: Container(
-                    constraints: BoxConstraints(
-                      maxWidth: maxWidth,
-                    ),
-                    decoration: BoxDecoration(
-                      border: Border.all(
-                        color: Colors.deepPurpleAccent,
-                        width: 2.0,
-                      ),
-                      borderRadius: BorderRadius.circular(50.0),
-                      color: Colors.deepPurpleAccent,
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.white,
-                          blurRadius: 1.0,
-                          spreadRadius: 1.0,
-                          offset: Offset(0, 2),
-                        ),
-                      ],
-                    ),
-                    child: Column(
-                      children: [
-                        SizedBox(height: 20),
-                        Container(
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: [
-                              SizedBox(width: 15),
-                              Text(
-                                'City: ',
-                                style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 30,
-                                  color: Colors.white,
-                                ),
-                              ),
-                              SizedBox(width: 10),
-                              Text(
-                               " " ,
-                                style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 30,
-                                  color: Colors.white,
-                                ),
-                              ),
-                              SizedBox(width: 20),
-
-                            ],
-                          ),
-                        ),
-                        Row(
-                          children: [
-                            SizedBox(width: 15),
-                            Text(
-                              "",
-                              style:
-                              TextStyle(fontSize: 20, color: Colors.grey),
-                            ),
-                          ],
-                        ),
-                        Container(
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Text(
-                                "",
-                                style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 70,
-                                  color: Colors.white,
-                                ),
-                              ),
-                              Text(
-                                "",
-                                style: TextStyle(
-                                    fontSize: 20, color: Colors.white),
-                              ),
-
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-                Padding(
-                  padding: EdgeInsets.all(10),
-                  child: Container(
-                    constraints: BoxConstraints(
-                      maxWidth: maxWidth,
-                    ),
-                    decoration: BoxDecoration(
-                      border: Border.all(
-                        color: Colors.deepPurpleAccent,
-                        width: 2.0,
-                      ),
-                      borderRadius: BorderRadius.circular(50.0),
-                      color: Colors.deepPurpleAccent,
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.white,
-                          blurRadius: 1.0,
-                          spreadRadius: 1.0,
-                          offset: Offset(0, 2),
-                        ),
-                      ],
-                    ),
-                    child: Padding(
-                      padding: EdgeInsets.all(20),
-                      child: Column(
-                        children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: [
-                              Text(
-                                'Temperature :',
-                                style: TextStyle(
-                                    fontSize: 20, color: Colors.white),
-                              ),
-                              SizedBox(width: 20),
-                              Text(
-                                "",
-                                style: TextStyle(
-                                    fontSize: 20, color: Colors.white),
-                              )
-                            ],
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: [
-                              Text(
-                                'Humidity  :',
-                                style: TextStyle(
-                                    fontSize: 20, color: Colors.white),
-                              ),
-                              SizedBox(width: 20),
-                              Text(
-                                "",
-                                style: TextStyle(
-                                    fontSize: 20, color: Colors.white),
-                              )
-                            ],
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: [
-                              Text(
-                                'Country  :',
-                                style: TextStyle(
-                                    fontSize: 20, color: Colors.white),
-                              ),
-                              SizedBox(width: 20),
-                              Text(
-                                "",
-                                style: TextStyle(
-                                    fontSize: 20, color: Colors.white),
-                              )
-                            ],
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                )
+                const Text('RANDOM USER API', style: TextStyle(fontWeight: FontWeight.bold,fontSize: 30),),
+                Image.network('https://media.giphy.com/media/cMQopWp5e3YyP1lMrc/giphy.gif', height: 200,),
+                const SizedBox(height: 30,),
+                //const LinearProgressIndicator(color: Colors.black,)
               ],
             ),
-          );
-        },
+          ),
+        ),
       ),
     );
   }
