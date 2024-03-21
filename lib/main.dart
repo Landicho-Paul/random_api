@@ -1,139 +1,26 @@
-import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'package:responsive_builder/responsive_builder.dart';
 import 'package:http/http.dart' as http;
-import 'package:intl/intl.dart';
 
-
-void main() {
+void main()
+{
   runApp(MaterialApp(
-    debugShowCheckedModeBanner: false,
-    theme: ThemeData(useMaterial3: true),
-    home: MainPage(),
+    home: Homepage(),
   ));
 }
 
-class MainPage extends StatefulWidget {
-  const MainPage({Key? key}) : super(key: key);
+class Homepage extends StatefulWidget {
+  const Homepage({super.key});
 
   @override
-  State<MainPage> createState() => _MainPageState();
+  State<Homepage> createState() => _HomepageState();
 }
 
-class _MainPageState extends State<MainPage> {
-  Map<String, dynamic> weatherData = {};
-  String description = "";
-  String temperature = "";
-  String city = "";
-  String country = "";
-  String humidity = "";
-  String search = "";
-  String icon = "";
-  TextEditingController searchController = TextEditingController(text: "Arayat");
-
-
-  @override
-  void initState() {
-    super.initState();
-    getWeather();
-  }
-
-  Future<void> getWeather() async {
-    search = searchController.text;
-
-    try
-    {
-      final link =
-          "https://api.openweathermap.org/data/2.5/weather?q=$search&appid=22001e2c36b023a5543b97049789009f&units=metric";
-      final response = await http.get(Uri.parse(link));
-      weatherData = Map<String, dynamic>.from(jsonDecode(response.body));
-    }
-    catch(e) {
-      description = "--";
-      temperature = "--";
-      city = "--";
-      country = "--";
-      humidity = "--";
-      search = "";
-      icon = "";
-    }
-
-
-    if (weatherData['cod'] == 200) {
-      String img = weatherData['weather'][0]['icon'];
-      setState(() {
-        description = weatherData['weather'][0]['description'].toString();
-        temperature = weatherData['main']['temp'].toString() + "°C";
-        city = weatherData['name'].toString();
-        country = weatherData['sys']['country'].toString();
-        humidity = weatherData['main']['humidity'].toString() + "%";
-        icon = "https://openweathermap.org/img/wn/$img@2x.png";
-      });
-    } else if (weatherData['cod'] == "404") {
-      showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            title: Text('City Not Found'),
-            content: Text('Please check your input and try again. '),
-            actions: <Widget>[
-              TextButton(
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-                child: Text('OK'),
-              ),
-            ],
-          );
-        },
-      );
-    }
-    else if (weatherData['cod'] == "400") {
-      showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            title: Text('City cannot be blank'),
-            content: Text('Please check your input and try again.'),
-            actions: <Widget>[
-              TextButton(
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-                child: Text('OK'),
-              ),
-            ],
-          );
-        },
-      );
-
-    }
-    else
-      {
-        showDialog(
-          context: context,
-          builder: (BuildContext context) {
-            return AlertDialog(
-              title: Text('Something Went Wrong'),
-              content: Text('Please Check Your Internet Connection and try again.'),
-              actions: <Widget>[
-                TextButton(
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  },
-                  child: Text('OK'),
-                ),
-              ],
-            );
-          },
-        );
-      }
-  }
-
+class _HomepageState extends State<Homepage> {
   @override
   Widget build(BuildContext context) {
-    String currentDate = DateFormat.yMMMMd('en_US').format(DateTime.now());
     return Scaffold(
+
+    
       appBar: AppBar(
         toolbarHeight: 80,
         title: Row(
