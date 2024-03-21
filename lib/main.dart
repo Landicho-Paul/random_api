@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:responsive_builder/responsive_builder.dart';
 
 void main()
 {
   runApp(MaterialApp(
+    debugShowCheckedModeBanner: false,
     home: Homepage(),
   ));
 }
@@ -36,7 +38,7 @@ class _HomepageState extends State<Homepage> {
                     children: [
 
                       Text(
-                        'QuickWeather',
+                        'RamdomME',
                         style:
                         TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                       ),
@@ -49,21 +51,6 @@ class _HomepageState extends State<Homepage> {
             Expanded(
               child: SizedBox(
                 width: 300,
-                child: TextField(
-                  controller: searchController,
-                  decoration: InputDecoration(
-                      labelText: 'Search',
-                      suffixIcon: IconButton(
-                        onPressed: () {
-                          setState(() {
-                            getWeather();
-                          });
-                        },
-                        icon: const Icon(Icons.search),
-                      ),
-                      border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(20))),
-                ),
               ),
             )
           ],
@@ -116,7 +103,7 @@ class _HomepageState extends State<Homepage> {
                               ),
                               SizedBox(width: 10),
                               Text(
-                                city + ", " + country,
+                               " " ,
                                 style: TextStyle(
                                   fontWeight: FontWeight.bold,
                                   fontSize: 30,
@@ -132,7 +119,7 @@ class _HomepageState extends State<Homepage> {
                           children: [
                             SizedBox(width: 15),
                             Text(
-                              currentDate,
+                              "",
                               style:
                               TextStyle(fontSize: 20, color: Colors.grey),
                             ),
@@ -143,7 +130,7 @@ class _HomepageState extends State<Homepage> {
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               Text(
-                                temperature,
+                                "",
                                 style: TextStyle(
                                   fontWeight: FontWeight.bold,
                                   fontSize: 70,
@@ -151,15 +138,11 @@ class _HomepageState extends State<Homepage> {
                                 ),
                               ),
                               Text(
-                                description,
+                                "",
                                 style: TextStyle(
                                     fontSize: 20, color: Colors.white),
                               ),
-                              if (icon.isNotEmpty) // Check if icon is not empty
-                                Image.network(
-                                  icon,
-                                  height: 150,
-                                ),
+
                             ],
                           ),
                         ),
@@ -203,7 +186,7 @@ class _HomepageState extends State<Homepage> {
                               ),
                               SizedBox(width: 20),
                               Text(
-                                temperature,
+                                "",
                                 style: TextStyle(
                                     fontSize: 20, color: Colors.white),
                               )
@@ -219,7 +202,7 @@ class _HomepageState extends State<Homepage> {
                               ),
                               SizedBox(width: 20),
                               Text(
-                                humidity,
+                                "",
                                 style: TextStyle(
                                     fontSize: 20, color: Colors.white),
                               )
@@ -235,7 +218,7 @@ class _HomepageState extends State<Homepage> {
                               ),
                               SizedBox(width: 20),
                               Text(
-                                country,
+                                "",
                                 style: TextStyle(
                                     fontSize: 20, color: Colors.white),
                               )
