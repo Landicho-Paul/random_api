@@ -22,7 +22,6 @@ class _LoadingState extends State<Loading> {
         final response = await http.get(Uri.parse(url)).timeout(const Duration(seconds: 7));
 
         user = [jsonDecode(response.body)];
-        print(user[0]['info']['version']);
         Navigator.pushReplacement(context, MaterialPageRoute(builder: (BuildContext context)=> const Homepage()));
 
         }catch(e) {

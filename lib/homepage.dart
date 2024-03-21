@@ -38,7 +38,6 @@ class _HomepageState extends State<Homepage> {
     age = user[0]['results'][0]['dob']['age'].toString();
     phoneNumber = user[0]['results'][0]['phone'];
     nationality = user[0]['results'][0]['nat'];
-    print(age);
     await Future.delayed(const Duration(seconds: 2));
 
   }
